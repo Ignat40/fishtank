@@ -3,7 +3,11 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(50%, -50%);
     height: 900px;
     width: 1600px;
+}
+
+canvas {
+    background-color: rgb(86, 233, 255);
 }

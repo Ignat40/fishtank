@@ -6,6 +6,7 @@ CANVAS_WIDTH = canvas.width = 1600;
 CANVAS_HEIGHT = canvas.height = 900;
 const numberOfEnemies = Math.floor(Math.random() * 10) + 1;
 const enemiesArray = [];
+let gameFrame = 0;
 
 
 // const enemyImage = new Image();
@@ -19,19 +20,23 @@ class Enemy{
         this.height = 100;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = Math.random() * (canvas.height - this.height);
+        this.newX = Math.random() * canvas.width;
+        this.newY = Math.random() * canvas.height;
         this.speed = Math.random() * 4 + 1;
-        this.angle = Math.random() * 500;
-        this.angleSpeed = Math.random() * 1.5  + 0.5;
-        //this.curve = Math.random() * 200 + 50;
+        this.interval = Math.floor(Math.random() * 200 + 50);
+        
         
     }
     update(){
-        this.x = canvas.width/5 * Math.cos(this.angle * Math.PI/200) + (canvas.
-        width/2 - this.width/2);
-        this.y =  canvas.height/5 * Math.sin(this.angle * Math.PI/300) + (canvas.
-        height/2 - this.height/2);;
-        this.angle += this.angleSpeed;
-        // this.y += this.speed;
+        if (gameFrame % this.interval === 0){
+            this.newX = Math.random() * (canvas.width - this.width);
+            this.newY = Math.random() * (canvas.height - this.height);   
+        }
+        let dx = this.x - this.newX;
+        let dy = this.y - this.newY;
+        this.x -= dx/70;
+        this.y -= dy/70;
+    
         if(this.x + this.width < 0) this.x = canvas.width;
     };
     draw(){
@@ -49,6 +54,10 @@ function animate(){
         enemy.update();
         enemy.draw();
     });
+    gameFrame++;
     requestAnimationFrame(animate);
 }
 animate();
+
+
+
