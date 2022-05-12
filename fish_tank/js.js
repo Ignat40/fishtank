@@ -2,20 +2,21 @@
 
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
+console.log(canvas.width);
+console.log(canvas.height);
 CANVAS_WIDTH = canvas.width = 1600;
 CANVAS_HEIGHT = canvas.height = 900;
-const numberOfEnemies = Math.floor(Math.random() * 10) + 1;
+const numberOfEnemies = Math.floor(Math.random() * 10) + 3;
 const enemiesArray = [];
 let gameFrame = 0;
+let click = 0;
 
 
-// const enemyImage = new Image();
-// enemyImage.src = 'photos/ribka.png';
 
 class Enemy{
     constructor(){
         this.image = new Image();
-        this.image.src = 'photos/ribka.png'
+        this.image.src = 'photos/ribka.png';
         this.width = 100;
         this.height = 100;
         this.x = Math.random() * (canvas.width - this.width);
@@ -47,17 +48,36 @@ class Enemy{
 for(let i = 0; i < numberOfEnemies; i++){
     enemiesArray.push(new Enemy());
 }
+
+function onClick(event) {
+    const s = event.clientX + "/" + event.clientY;
+    console.log(s)
+    click++
+    enemiesArray.forEach(enemy => {
+        enemy.x = event.clientX
+        enemy.y = event.clientY
+    });
+    click--;
+}
+
+enemiesArray.forEach(enemy => {
+    canvas.addEventListener("click", onClick);
+});
+
 function animate(){
 
-    ctx.clearRect(0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     enemiesArray.forEach(enemy => {
         enemy.update();
         enemy.draw();
     });
     gameFrame++;
+    if (click != 0) return;
     requestAnimationFrame(animate);
 }
 animate();
+
+
 
 
 
